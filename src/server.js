@@ -14,7 +14,7 @@ app.use(express.urlencoded());
 configViewEngine(app);
 app.use('/', webRoutes);
 const corsOptions = {
-  origin: 'https://www.duyhxm.me',
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
