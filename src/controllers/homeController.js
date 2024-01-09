@@ -17,7 +17,7 @@ const createUsers = async (req, res) =>{
     const {name, email, date, text} = req.body;
     const convertedDate = moment(date, 'MM/DD/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
     let [results, fields] = await connection.query(
-    ` INSERT INTO data (name, email, subject, text, scheduled_date) VALUES (?, ?, ?, ?, ?) `, [name, email, 'A LETTER FROM APOLLON', text, convertedDate]);
+    ` INSERT INTO userData (name, email, subject, text, scheduled_date) VALUES (?, ?, ?, ?, ?) `, [name, email, 'A LETTER FROM APOLLON', text, convertedDate]);
     res.json({message: 'Data received successfully.'});
 }
 myOAuth2Client.setCredentials({

@@ -69,7 +69,7 @@ async function checkAndSendEmails() {
     const currentDate = new Date();
     console.log(currentDate);
 
-    const [results, fields] = await connection.query('SELECT * FROM data'); 
+    const [results, fields] = await connection.query('SELECT * FROM userData'); 
     console.log(results);
     console.log(results[0].scheduled_date);
     results.forEach((result) => {
