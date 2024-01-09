@@ -64,29 +64,39 @@ function scheduleEmail(name, email, subject, text, date) {
 async function checkAndSendEmails() {
   try {
       const currentDate = new Date();
-      const options = {
-        timeZone: 'Asia/Ho_Chi_Minh',
-        hour12: false,
-      };
+      console.log('current date is: ', currentDate);
+    //   const options = {
+    //     timeZone: 'Asia/Ho_Chi_Minh',
+    //     hour12: false,
+    //   };
       
-      const localDateTimeString = currentDate.toLocaleString('en-US', options);
-      const last = moment(localDateTimeString, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm');
-      console.log(typeof last);
-      console.log(last);
-      const [results, fields] = await connection.query('SELECT * FROM userData'); 
-      results.forEach((result) => {
-        const inputTime = result.scheduled_date;
-        const outputTimeZone = 'Asia/Ho_Chi_Minh';
-        const convertedTime = moment.tz(inputTime, outputTimeZone).subtract(7, 'hours').format('YYYY-MM-DD HH:mm');
-        const z = inputTime.toLocaleString('en-US', options);
-        const t = moment(z, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm');
-        console.log(t);
-        console.log(typeof t);
-        if (last === t && result.email != '') {
-          scheduleEmail(result.name, result.email, result.subject, result.text, last);
-        }
-        // const cmp = convertedTime === last;
-        // console.log(cmp);
+    //   const localDateTimeString = currentDate.toLocaleString('en-US', options);
+    //   const last = moment(localDateTimeString, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm');
+    //   console.log(typeof last);
+    //   console.log(last);
+    //   const [results, fields] = await connection.query('SELECT * FROM userData'); 
+    //   results.forEach((result) => {
+    //     const inputTime = result.scheduled_date;
+    //     const outputTimeZone = 'Asia/Ho_Chi_Minh';
+    //     const convertedTime = moment.tz(inputTime, outputTimeZone).subtract(7, 'hours').format('YYYY-MM-DD HH:mm');
+    //     const z = inputTime.toLocaleString('en-US', options);
+    //     const t = moment(z, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm');
+    //     console.log(t);
+    //     console.log(typeof t);
+    //     if (last === t && result.email != '') {
+    //       console.log('check is right');
+    //       const k = new Date(last);
+    //       scheduleEmail(result.name, result.email, result.subject, result.text, k);
+    //     }
+    // });
+
+    const [results, fields] = await connection.query('SELECT * FROM userData');
+    results.forEach((result) => {
+      const emailDate = new Date(result.scheduled_date);
+      console.log(result.id, emailDate);
+      if(currentDate.toDateString()=== emailDate.toDateString() && result.email != ''){
+        scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
+      }
     });
   } catch (error) {
     console.error('Error:', error);

@@ -20,6 +20,7 @@ const createUsers = async (req, res) =>{
     console.log('check name: ', name);
     console.log('check body: ', req.body);
     const time = new Date();
+    console.log('check current date is: ', time);
     const options = {
         timeZone: 'Asia/Ho_Chi_Minh',
         hour12: false,
