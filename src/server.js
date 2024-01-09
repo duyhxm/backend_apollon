@@ -1,25 +1,21 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const app = express();
 const port = process.env.PORT || 8000;
 const hostName = process.env.HOST_NAME;
 const configViewEngine = require('./config/viewEngine');
 const webRoutes = require('./routes/web');
 const connection = require('./config/database');
 const cron = require('node-cron');
-
+const app = express();
+const corsOptions = require('./config/cors');
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded());
 configViewEngine(app);
 app.use('/', webRoutes);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+
 
 
 
@@ -83,7 +79,7 @@ async function checkAndSendEmails() {
     console.error('Error:', error);
   }
 }
-cron.schedule('* * * * *', checkAndSendEmails);
+// cron.schedule('* * * * *', checkAndSendEmails);
 
 app.listen(port, hostName, () => {
   console.log(`Example app listening on port ${port}`)

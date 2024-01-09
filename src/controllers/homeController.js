@@ -14,13 +14,11 @@ const getHomePage = (req, res) =>{
     res.send('Hello my world');
 }
 const createUsers = async (req, res) =>{
-    // const {name, email, date, text} = req.body;
-    const name = req.body.name;
-    const email = req.body.email;
-    const text = req.body.text;
-    const date = req.body.date;
+    const {name, email, date, text} = req.body;
     const convertedDate = moment(date, 'MM/DD/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
-    console.log(convertedDate);
+    console.log('check date: ',convertedDate);
+    console.log('check name: ', name);
+    console.log('check body: ', req.body);
     let [results, fields] = await connection.query(
     ` INSERT INTO userData (name, email, subject, text, scheduled_date) VALUES (?, ?, ?, ?, ?) `, [name, email, 'A LETTER FROM APOLLON', text, convertedDate]);
     res.json({message: 'Data received successfully.'});
