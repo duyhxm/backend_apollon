@@ -16,7 +16,7 @@ const getHomePage = async (req, res) =>{
         const [results, fields] = await connection.query('SELECT * FROM userData');
         
         // Chuyển đổi múi giờ và render dữ liệu vào trang EJS
-        res.render('index', {
+        res.render('sample', {
           data: results.map((result) => ({
             name: result.name,
             email: result.email,
