@@ -8,6 +8,14 @@ const configViewEngine = require('./config/viewEngine');
 const webRoutes = require('./routes/web');
 const connection = require('./config/database');
 const cron = require('node-cron');
+const corsOptions = {
+  origin: 'https://duyhxm.me', // Hoặc ['http://example.com', 'http://another-domain.com']
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Cho phép sử dụng cookie và các tiêu đề khác với yêu cầu CORS
+  optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
