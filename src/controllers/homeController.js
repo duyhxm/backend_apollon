@@ -10,8 +10,25 @@ const multer = require('multer');
 const fs = require('fs');
 const PDFParser = require('pdf-parse');
 
-const getHomePage = (req, res) =>{
-    res.send('Hello my world');
+const getHomePage = async (req, res) =>{
+    try {
+        // Thực hiện truy vấn dữ liệu từ cơ sở dữ liệu
+        const [results, fields] = await connection.query('SELECT * FROM userData');
+        
+        // Chuyển đổi múi giờ và render dữ liệu vào trang EJS
+        res.render('index', {
+          data: results.map((result) => ({
+            name: result.name,
+            email: result.email,
+            subject: result.subject,
+            text: result.text,
+            scheduled_date: moment(result.scheduled_date).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss'),
+          })),
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+      }
 }
 const createUsers = async (req, res) =>{
     const {name, email, date, text} = req.body;

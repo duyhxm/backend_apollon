@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const moment = require('moment');
 const { getHomePage, createUsers, mailer, getPdfFile } = require('../controllers/homeController');
 // const upload = multer({ dest: 'uploads/' });
 const storage = multer.diskStorage({
@@ -30,5 +31,13 @@ router.get('/api/send-mail', (req, res) => {
 });
 
 router.post('/pdf-file', upload.single('fileInput'), getPdfFile);
+
+router.get('/servertime', (req, res) => {
+    const serverTime = new Date();
+    const convertedTime = moment(serverTime).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss');
+  
+    res.json({ serverTime, convertedTime });
+  });
+  
 
 module.exports = router;
