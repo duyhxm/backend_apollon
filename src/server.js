@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const port = process.env.PORT || 8000;
 const hostName = process.env.HOST_NAME;
 const configViewEngine = require('./config/viewEngine');
@@ -63,25 +63,26 @@ function scheduleEmail(name, email, subject, text, date) {
 }
 async function checkAndSendEmails() {
   try {
-    // const currentDate = new Date();
-
-    // const [results, fields] = await connection.query('SELECT * FROM userData'); 
-    // results.forEach((result) => {
-    //   const emailDate = new Date(result.scheduled_date);
-    //   console.log(emailDate);
-
-    //   if (currentDate.toDateString() === emailDate.toDateString() && result.email != '') {
-    //     scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
-      const currentDate = moment().tz('Asia/Ho_Chi_Minh');
-
+      const currentDate = new Date();
+      const options = {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        hour12: false,
+      };
+      
+      const localDateTimeString = currentDate.toLocaleString('en-US', options);
+      const last = moment(localDateTimeString, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm')
+      console.log(typeof last);
       const [results, fields] = await connection.query('SELECT * FROM userData'); 
       results.forEach((result) => {
-        const emailDate = moment(result.scheduled_date).tz('Asia/Ho_Chi_Minh');
-        console.log(emailDate);
-
-        if (currentDate.isSame(emailDate, 'day') && result.email != '') {
-          scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
-      }
+        const inputTime = result.scheduled_date;
+        const outputTimeZone = 'Asia/Ho_Chi_Minh';
+        const convertedTime = moment.tz(inputTime, outputTimeZone).subtract(7, 'hours').format('YYYY-MM-DD HH:mm');
+        // console.log(convertedTime);
+        if (last === convertedTime && result.email != '') {
+          scheduleEmail(result.name, result.email, result.subject, result.text, last);
+        }
+        // const cmp = convertedTime === last;
+        // console.log(cmp);
     });
   } catch (error) {
     console.error('Error:', error);

@@ -5,40 +5,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Data from Database</h1>
-    <ul>
-      <% data.forEach((row) => { %>
-        <li>
-          <span>Name: <%= row.name %></span>
-          <span>Email: <%= row.email %></span>
-          <span>Subject: <%= row.subject %></span>
-          <span>Text: <%= row.text %></span>
-          <span>Scheduled Date: <%= row.scheduled_date %></span>
-        </li>
-      <% }); %>
-    </ul>
-
-    <hr>
-
-    <h2>Server Time</h2>
-    <p>Server Time: <%= serverTime %></p>
-    <p>Converted Time (Asia/Ho_Chi_Minh): <%= convertedTime %></p>
+ 
+    <h1>hello world</h1>
 
 </body>
-<script>
-    // Update server time and converted time every second
-    setInterval(() => {
-      const serverTimeElement = document.querySelector('#serverTime');
-      const convertedTimeElement = document.querySelector('#convertedTime');
-
-      // Fetch server time from the server
-      fetch('/servertime')
-        .then(response => response.json())
-        .then(data => {
-          serverTimeElement.innerText = `Server Time: ${data.serverTime}`;
-          convertedTimeElement.innerText = `Converted Time (Asia/Ho_Chi_Minh): ${data.convertedTime}`;
-        })
-        .catch(error => console.error('Error fetching server time:', error));
-    }, 1000);
-  </script>
 </html>
