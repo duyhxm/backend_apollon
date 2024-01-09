@@ -30,7 +30,7 @@ myOAuth2Client.setCredentials({
   });
 const mailer = async (req, res) => {
     const { name, email, date, text } = req.body;
-    const convertedDate = await moment(date, 'MM/DD/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+    const convertedDate = moment(date, 'MM/DD/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
     console.log(convertedDate);
     const myAccessTokenObject = await myOAuth2Client.getAccessToken();
     const myAccessToken = myAccessTokenObject?.token;
