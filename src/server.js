@@ -63,11 +63,8 @@ function scheduleEmail(name, email, subject, text, date) {
 async function checkAndSendEmails() {
   try {
     const currentDate = new Date();
-    console.log(currentDate);
 
     const [results, fields] = await connection.query('SELECT * FROM userData'); 
-    console.log(results);
-    console.log(results[0].scheduled_date);
     results.forEach((result) => {
       const emailDate = new Date(result.scheduled_date);
 
@@ -79,7 +76,7 @@ async function checkAndSendEmails() {
     console.error('Error:', error);
   }
 }
-// cron.schedule('* * * * *', checkAndSendEmails);
+cron.schedule('* * * * *', checkAndSendEmails);
 
 app.listen(port, hostName, () => {
   console.log(`Example app listening on port ${port}`)
