@@ -13,17 +13,15 @@ app.use(express.json());
 app.use(express.urlencoded());
 configViewEngine(app);
 app.use('/', webRoutes);
-app.use(cors());
-app.use((req, res, next) => {
-  const allowedOrigins = ['https://www.duyhxm.me', 'https://duyhxm.me', 'https://frontend-apollon.vercel.app'];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+const corsOptions = {
+  origin: 'https://www.duyhxm.me',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
 
 const { OAuth2Client } = require('google-auth-library');
 const nodemailer = require('nodemailer');
