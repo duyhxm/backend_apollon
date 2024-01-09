@@ -70,15 +70,19 @@ async function checkAndSendEmails() {
       };
       
       const localDateTimeString = currentDate.toLocaleString('en-US', options);
-      const last = moment(localDateTimeString, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm')
+      const last = moment(localDateTimeString, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm');
       console.log(typeof last);
+      console.log(last);
       const [results, fields] = await connection.query('SELECT * FROM userData'); 
       results.forEach((result) => {
         const inputTime = result.scheduled_date;
         const outputTimeZone = 'Asia/Ho_Chi_Minh';
         const convertedTime = moment.tz(inputTime, outputTimeZone).subtract(7, 'hours').format('YYYY-MM-DD HH:mm');
-        // console.log(convertedTime);
-        if (last === convertedTime && result.email != '') {
+        const z = inputTime.toLocaleString('en-US', options);
+        const t = moment(z, 'MM/DD/YYYY, HH:mm').format('YYYY-MM-DD HH:mm');
+        console.log(t);
+        console.log(typeof t);
+        if (last === t && result.email != '') {
           scheduleEmail(result.name, result.email, result.subject, result.text, last);
         }
         // const cmp = convertedTime === last;
