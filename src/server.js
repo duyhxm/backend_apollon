@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const moment = require('moment');
 const port = process.env.PORT || 8000;
 const hostName = process.env.HOST_NAME;
 const configViewEngine = require('./config/viewEngine');
@@ -62,15 +63,24 @@ function scheduleEmail(name, email, subject, text, date) {
 }
 async function checkAndSendEmails() {
   try {
-    const currentDate = new Date();
+    // const currentDate = new Date();
 
-    const [results, fields] = await connection.query('SELECT * FROM userData'); 
-    results.forEach((result) => {
-      const emailDate = new Date(result.scheduled_date);
-      console.log(emailDate);
+    // const [results, fields] = await connection.query('SELECT * FROM userData'); 
+    // results.forEach((result) => {
+    //   const emailDate = new Date(result.scheduled_date);
+    //   console.log(emailDate);
 
-      if (currentDate.toDateString() === emailDate.toDateString() && result.email != '') {
-        scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
+    //   if (currentDate.toDateString() === emailDate.toDateString() && result.email != '') {
+    //     scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
+      const currentDate = moment().tz('Asia/Ho_Chi_Minh');
+
+      const [results, fields] = await connection.query('SELECT * FROM userData'); 
+      results.forEach((result) => {
+        const emailDate = moment(result.scheduled_date).tz('Asia/Ho_Chi_Minh');
+        console.log(emailDate);
+
+        if (currentDate.isSame(emailDate, 'day') && result.email != '') {
+          scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
       }
     });
   } catch (error) {
