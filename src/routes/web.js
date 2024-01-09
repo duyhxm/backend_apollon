@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const { getHomePage, createUsers, mailer, getPdfFile } = require('../controllers/homeController');
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
+const storage = multer.diskStorage({
+    destination: '/tmp', // Thay đổi đường dẫn đến thư mục tạm thời
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
 
 router.get('/duyhxm', (req, res) => {
     res.render('sample.ejs');
