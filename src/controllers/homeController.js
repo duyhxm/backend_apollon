@@ -19,6 +19,8 @@ const createUsers = async (req, res) =>{
     console.log('check date: ',convertedDate);
     console.log('check name: ', name);
     console.log('check body: ', req.body);
+    const time = new Date();
+    console.log('check current date: ', time);
     let [results, fields] = await connection.query(
     ` INSERT INTO userData (name, email, subject, text, scheduled_date) VALUES (?, ?, ?, ?, ?) `, [name, email, 'A LETTER FROM APOLLON', text, convertedDate]);
     res.json({message: 'Data received successfully.'});
