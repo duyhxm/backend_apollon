@@ -13,14 +13,15 @@ app.use(express.json());
 app.use(express.urlencoded());
 configViewEngine(app);
 app.use('/', webRoutes);
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+app.use(cors());
 
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 
 
 const { OAuth2Client } = require('google-auth-library');
