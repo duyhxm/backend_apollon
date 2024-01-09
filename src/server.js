@@ -67,6 +67,7 @@ async function checkAndSendEmails() {
     const [results, fields] = await connection.query('SELECT * FROM userData'); 
     results.forEach((result) => {
       const emailDate = new Date(result.scheduled_date);
+      console.log(emailDate);
 
       if (currentDate.toDateString() === emailDate.toDateString() && result.email != '') {
         scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
