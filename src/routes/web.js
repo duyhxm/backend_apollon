@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const moment = require('moment');
-const { getHomePage, createUsers, mailer, getPdfFile } = require('../controllers/homeController');
+const { getHomePage, createUsers, mailer, getPdfFile, checkTime } = require('../controllers/homeController');
 // const upload = multer({ dest: 'uploads/' });
 const storage = multer.diskStorage({
     destination: '/tmp', // Thay đổi đường dẫn đến thư mục tạm thời
@@ -24,6 +24,7 @@ router.post('/user', createUsers);
 
 router.post('/send/email', mailer);
 router.post('/send/empty-email', mailer);
+router.get('/check-time', checkTime);
 
 router.get('/api/send-mail', (req, res) => {
     const data = {message: 'abff934b1401422483bbe486f07aca2f'};

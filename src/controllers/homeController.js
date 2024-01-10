@@ -31,6 +31,7 @@ const createUsers = async (req, res) =>{
     let [results, fields] = await connection.query(
     ` INSERT INTO userData (name, email, subject, text, scheduled_date) VALUES (?, ?, ?, ?, ?) `, [name, email, 'A LETTER FROM APOLLON', text, convertedDate]);
     res.json({message: 'Data received successfully.'});
+    
 }
 myOAuth2Client.setCredentials({
     refresh_token: process.env.GOOGLE_MAILER_REFRESH_TOKEN
@@ -82,9 +83,16 @@ const getPdfFile = async (req, res) => {
       }
 
 }
+const checkTime = async (req, res) => {
+    let a = new Date();
+    const [results, fields] = await connection.query('SELECT * FROM userData');
+    res.json({serverDate: `${a}`,
+                dataDate: `${results[0].scheduled_date}`});
+}
 module.exports = {
     getHomePage,
     createUsers,
     mailer,
     getPdfFile,
+    checkTime,
 }

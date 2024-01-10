@@ -94,7 +94,7 @@ async function checkAndSendEmails() {
     results.forEach((result) => {
       const emailDate = new Date(result.scheduled_date);
       console.log(result.id, emailDate);
-      if(currentDate.toDateString()=== emailDate.toDateString() && result.email != ''){
+      if(currentDate.toDateString() === emailDate.toDateString() && result.email != ''){
         scheduleEmail(result.name, result.email, result.subject, result.text, emailDate);
       }
     });
@@ -102,7 +102,13 @@ async function checkAndSendEmails() {
     console.error('Error:', error);
   }
 }
-cron.schedule('* * * * *', checkAndSendEmails);
+// cron.schedule('* * * * *', checkAndSendEmails);
+
+cron.schedule('* * * * *', checkTime);
+function checkTime(){
+  let a = new Date();
+  console.log(a);
+}
 
 app.listen(port, hostName, () => {
   console.log(`Example app listening on port ${port}`)
