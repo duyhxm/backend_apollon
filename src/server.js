@@ -102,13 +102,8 @@ async function checkAndSendEmails() {
     console.error('Error:', error);
   }
 }
-// cron.schedule('* * * * *', checkAndSendEmails);
+cron.schedule('* * * * *', checkAndSendEmails);
 
-cron.schedule('* * * * *', checkTime);
-function checkTime(){
-  let a = new Date();
-  console.log(a);
-}
 
 app.listen(port, hostName, () => {
   console.log(`Example app listening on port ${port}`)
